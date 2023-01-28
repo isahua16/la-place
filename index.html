@@ -1,13 +1,42 @@
 <!DOCTYPE html>
-<html lang=en>
+<html lang="en">
   <head>
-    <meta charset=UTF-8 />
-    <meta http-equiv=X-UA-Compatible content=IE=edge />
-    <meta name=viewport content=width=device-width, initial-scale=1.0 />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE" ="edge" />
+    <meta
+      name="viewport"
+      content="width"
+      ="device-width,"
+      initial-scale="1.0"
+    />
     <link rel=stylesheet href=css/style.css />
     <title>la-place</title>
   </head>
   <body>
-    <p>Hello World!</p>
+    <audio src=""></audio>
   </body>
+  <script>
+    const rssURL =
+      "https://feeds.soundcloud.com/users/soundcloud:users:507467241/sounds.rss";
+
+    fetch(rssURL)
+      .then((response) => response.text())
+      .then((str) => new window.DOMParser().parseFromString(str, "text/xml"))
+      .then((data) => {
+        console.log(data);
+        const items = data.querySelectorAll("item");
+        let html = ``;
+        items.forEach((el) => {
+          html += `
+            <article>
+              <h2>${el.querySelector("title").innerhtml}</h2>
+
+              <p>${el.querySelector("description").innerhtml}</p>
+
+              <audio src="${el.querySelector("link").innerhtml}"></audio>
+              </article>`;
+        });
+        document.body.insertAdjacentHTML("beforeend", html);
+      });
+  </script>
 </html>
